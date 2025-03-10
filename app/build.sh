@@ -923,10 +923,11 @@ fi
 if [ $BUILD_LINUX == 1 ]; then
 	# Skip 32-bit build in tests
 	if [[ "${ZOTERO_TEST:-}" = "1" ]] || [[ "${SKIP_32:-}" = "1" ]]; then
-		archs="x86_64"
+		archs="x86_64 aarch64"
 	else
-		archs="i686 x86_64"
+		archs="i686 x86_64 aarch64"
 	fi
+  cp "$CALLDIR/update-packaging/removed-files_linux-x86_64" "$CALLDIR/update-packaging/removed-files_linux-aarch64"
 	
 	for arch in $archs; do
 		runtime_path="${LINUX_RUNTIME_PATH_PREFIX}${arch}"
@@ -948,10 +949,10 @@ if [ $BUILD_LINUX == 1 ]; then
 		cp "$CALLDIR/linux/zotero.desktop" "$APPDIR"
 		cp "$CALLDIR/linux/set_launcher_icon" "$APPDIR"
 		
-		# Use our own updater, because Mozilla's requires updates signed by Mozilla
-		check_lfs_file "$CALLDIR/linux/updater.tar.xz"
-		tar xf "$CALLDIR/linux/updater.tar.xz" --to-stdout updater-$arch > "$APPDIR/updater"
-		chmod 755 "$APPDIR/updater"
+		# # Use our own updater, because Mozilla's requires updates signed by Mozilla
+		# check_lfs_file "$CALLDIR/linux/updater.tar.xz"
+		# tar xf "$CALLDIR/linux/updater.tar.xz" --to-stdout updater-$arch > "$APPDIR/updater"
+		# chmod 755 "$APPDIR/updater"
 
 		# Copy app files
 		rsync -a "$base_dir/" "$APPDIR/"
